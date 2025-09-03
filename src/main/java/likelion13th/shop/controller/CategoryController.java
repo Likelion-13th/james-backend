@@ -1,54 +1,39 @@
 package likelion13th.shop.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-
-import likelion13th.shop.repository.CategoryRepository;
-import likelion13th.shop.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import likelion13th.shop.DTO.response.ItemResponse;
 import likelion13th.shop.global.api.ApiResponse;
-import likelion13th.shop.global.api.ErrorCode;
 import likelion13th.shop.global.api.SuccessCode;
-import likelion13th.shop.global.exception.GeneralException;
-import lombok.extern.slf4j.Slf4j;
+import likelion13th.shop.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
 
-@Slf4j
+@Tag(name = "카테고리", description = "카테고리 관련 API 입니다.")
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-    private final CategoryRepository categoryRepository;
 
-    @GetMapping
-    @Operation (summary = "모든 카테고리 조회", description = "전체 카테고리를 조회합니다.")
-    public ApiResponse<?> getAllCategories(){
-        List<CategoryResponseDto> categories = categoryService.getAllCategories();
+    // 상품 조회(카테고리별)
+    @GetMapping("/{categoryId}/items")
+    @Operation(summary = "카테고리별 상품 조회", description = "상품을 카테고리 별로 조회합니다.")
+    public ApiResponse<?> getItemsByCategory(@PathVariable Long categoryId) {
+        List<ItemResponse> items = categoryService.getItemsByCategory(categoryId);
 
-        if (categories.isEmpty()){
+        //상품 없을 시 : 성공 응답 + 빈 리스트 반환
+        if (items.isEmpty()) {
             return ApiResponse.onSuccess(SuccessCode.CATEGORY_ITEMS_EMPTY, Collections.emptyList());
         }
-        return ApiResponse.onSuccess(SuccessCode.CATEGORY_ITEMS_GET_SUCCESS, categories);
-    }
 
-    @GetMapping("/{categoryId}")
-    @Operation (summary = "개별 카테고리 조회", description = "개별 카테고리를 조회합니다.")
-    public ApiResponse<?> getCategory(@PathVariable Long categoryId){
-        try {
-            CategoryResponseDto category = categoryService.getCategoryById(categoryId);
-            return ApiResponse.onSuccess(SuccessCode.CATEGORY_ITEMS_GET_SUCCESS, category);
-        } catch (GeneralException e) {
-            log.error("[ERROR] 카테고리 조회 중 예외 발생: {}", e.getReason().getMessage());
-            throw e;
-        } catch (Exception e) {
-            log.error("[ERROR] 알 수 없는 예외 발생: {}", e.getMessage());
-            throw new GeneralException(ErrorCode.INTERNAL_SERVER_ERROR);
-        }
-    }
+        return ApiResponse.onSuccess(SuccessCode.CATEGORY_ITEMS_GET_SUCCESS, items);
 
-    // OrderController 기반으로 모든 카테고리랑 개별 카테고리를 조회하도록 했습니다.
+    }
 }
