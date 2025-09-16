@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,7 +27,7 @@ public class User extends BaseEntity {
 
     // 카카오 닉네임 (중복 허용)
     @Column(nullable = false)
-    private String userNickname;
+    private String usernickname;
 
     // 휴대폰 번호 (선택 사항, 기본값 null)
     @Column(nullable = true)
@@ -53,12 +52,8 @@ public class User extends BaseEntity {
     private RefreshToken auth;
 
     // 주소 정보 (임베디드 타입)
+    @Setter
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "zipcode", column = @Column(name = "zipcode", nullable = false)),
-            @AttributeOverride(name = "address", column = @Column(name = "address", nullable = false)),
-            @AttributeOverride(name = "addressDetail", column = @Column(name = "address_detail", nullable = false))
-    })
     private Address address;
 
     // 주소 저장/수정 메서드 추가
@@ -72,7 +67,7 @@ public class User extends BaseEntity {
 
     // 주문 추가 메서드
     public void addOrder(Order order) {
-        this.orders.add(order);
+        orders.add(order);
         order.setUser(this);
     }
 

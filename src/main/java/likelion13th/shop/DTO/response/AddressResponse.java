@@ -14,11 +14,10 @@ public class AddressResponse {
     private String address;
     private String addressDetail;
 
-    public static AddressResponse from(Address address){
-        return new AddressResponse (
-                address.getZipcode(),
-                address.getAddress(),
-                address.getAddressDetail()
-        );
+    public AddressResponse from(Address address) {
+        this.zipcode = address.getZipcode();
+        this.address = address.getAddress();
+        this.addressDetail = address.getAddressDetail();
+        return this;
     }
 }

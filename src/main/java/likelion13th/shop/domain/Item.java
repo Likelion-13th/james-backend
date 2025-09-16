@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "item")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,7 +33,6 @@ public class Item extends BaseEntity {
     private String brand;
 
     @Column(nullable = false)
-    @Setter
     private boolean isNew= false;
 
     //Category와 다대다 연관관계 설정

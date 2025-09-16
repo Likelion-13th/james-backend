@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByProviderId(String providerId);
     boolean existsByProviderId(String providerId);
 
-    List<User> findByUserNickname(String userNickname);
+    //List<User> findByUsernickname(String usernickname);
 
     // Optional<User> findByKakaoId(String kakaoId);
 }
