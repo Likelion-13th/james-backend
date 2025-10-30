@@ -14,10 +14,9 @@ public class AddressResponse {
     private String address;
     private String addressDetail;
 
-    public AddressResponse from(Address address) {
+    public AddressResponse (Address address) {
         this.zipcode = address.getZipcode();
         this.address = address.getAddress();
         this.addressDetail = address.getAddressDetail();
-        return this;
     }
 }
