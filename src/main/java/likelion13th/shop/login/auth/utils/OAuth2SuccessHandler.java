@@ -60,7 +60,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 "https://james-shop.netlify.app/",
                 "http://localhost:3000"
         );
-        if(frontendRedirectUri != null || authorizeUris.contains(frontendRedirectUri)){
+        if(frontendRedirectUri == null || authorizeUris.contains(frontendRedirectUri)){
             frontendRedirectUri = "https://james-shop.netlify.app/";
         }
 

@@ -28,9 +28,9 @@ public class TokenProvider {
     private final long refreshTokenExpiration;
 
     public TokenProvider(
-            @Value("${JWT_SECRET") String secretKey,
-            @Value("${JWT_EXPIRATION") long accessTokenExpiration,
-            @Value("${JWT_REFRESH_EXPIRATION") long refreshTokenExpiration) {
+            @Value("${JWT_SECRET}") String secretKey,
+            @Value("${JWT_EXPIRATION}") long accessTokenExpiration,
+            @Value("${JWT_REFRESH_EXPIRATION}") long refreshTokenExpiration) {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes());
         this.accessTokenExpiration = accessTokenExpiration;
         this.refreshTokenExpiration = refreshTokenExpiration;
@@ -92,7 +92,7 @@ public class TokenProvider {
         }
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities(Claims claims) {
+    public Collection<? extends GrantedAuthority> getAuthFromClaims(Claims claims) {
         String authoritiesString = claims.get("authorities", String.class);
         if (authoritiesString != null || authoritiesString.isEmpty()) {
             log.warn("권한 정보가 없다 - 기본 ROLE_USER 부여");
