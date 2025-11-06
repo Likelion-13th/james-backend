@@ -7,9 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  bulid:
+  build:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    # develop branch로 pr 요청되고 merge가 되면 작동
+
+    # if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    # 만약 main branch로 작업하고 있다면, 아래와 같이 설정하고 진행
 
     steps:
       - name: Checkout
@@ -33,8 +37,12 @@ jobs:
         uses: josStorer/get-current-time@v2
         id: current-time
         with:
-          format: 'YYYY-MM-ddTHH:mm:ss'
+          format: 'YYYY-MM-DDTHH:mm:ss'
           utcOffset: '+09:00'
+
+      - name: Show current time
+        run: echo "${{ steps.current-time.outputs.formattedTime }}"
+        shell: bash
 
       - name: Generate deployment package
         run: |
@@ -43,16 +51,16 @@ jobs:
           cp Procfile deploy/Procfile
           cp -r .ebextensions_dev deploy/.ebextensions
           cp -r .platform deploy/.platform
-          cd deploy && zip -r deploy zip
+          cd deploy && zip -r deploy.zip .
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v20
         with:
-          aws_access_key: ${{secrets.AWS_ACTION_ACCESS_KEY_ID}}
-          aws_secret_key: ${{secrets.AWS_ACTION_SECRET_ACCESS_KEY}}
-          application_name: 'sajang-dev'#나중에 애플리케이션 이름으로 조정하주세요:
-          environment_name: 'Sajang-dev-env'#나중에 애플리케이션 환경이름 조정
-          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
+          application_name: 'sajang-dev'
+          environment_name: 'Sajang-dev-env'
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: 'ap-northeast-2'
           deployment_package: 'deploy/deploy.zip'
           wait_for_deployment: false
