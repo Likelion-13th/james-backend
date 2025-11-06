@@ -2,59 +2,6 @@
 spring:
   profiles:
     active: local
-
-#Swagger
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-    # Swagger의 OpenAPI 명세를 제공하는 경로 설정
-  swagger-ui:
-    path: /swagger-ui.html
-    # Swaggerd UI 표시할 URL 경로 설정
-    display-request-duration: true # 요청이 안료되는 데 걸린 시간 표시 여부
-    operations-sorter: method # 메서드 이름 기준으로 API 정렬
----
-spring:
-  config:
-    activate:
-      on-profile: local
-  datasource:
-    url: ${local.db.url}
-    username: ${local.db.username} #sajang_user
-    password: ${local.db.password} #sajang_password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  sql:
-    init:
-      mode: never
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      dialect: org.hibernate.dialect.MySQLDialect
-      use_sql_comments: true
-      default_batch_fetch_size: 1000
----
-
-spring:
-  config:
-    activate:
-      on-profile: develop
-  datasource:
-    url: ${aws.db.url}
-    username: ${aws.db.username} #sajang_user
-    password: ${aws.db.password} #sajang_password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  sql:
-    init:
-      mode: never
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      dialect: org.hibernate.dialect.MySQLDialect
-      use_sql_comments: true
-      default_batch_fetch_size: 1000
-
   security:
     oauth2:
       client:
@@ -74,7 +21,7 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-  #S3
+  #S3 size setting
   servlet:
     multipart:
       enabled: true
@@ -84,7 +31,7 @@ spring:
 JWT_SECRET: ${JWT_SECRET}
 JWT_EXPIRATION: ${JWT_EXPIRATION}                  # Access(ms)
 JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION}  # Refresh(ms)
-
+#S3
 cloud:
   aws:
     access-key: ${AWS_ACCESS_KEY:default-access-key}
@@ -92,7 +39,59 @@ cloud:
     region: ${AWS_REGION:ap-northeast-2}
     bucket: ${AWS_BUCKET:default-bucket}
 
+#Swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    # Swagger의 OpenAPI 명세를 제공하는 경로 설정
+  swagger-ui:
+    path: /swagger-ui.html
+    # Swaggerd UI 표시할 URL 경로 설정
+    display-request-duration: true # 요청이 안료되는 데 걸린 시간 표시 여부
+    operations-sorter: method # 메서드 이름 기준으로 API 정렬
+
 server:
   tomcat:
     max-swallow-size: -1
     max-http-form-post-size: -1
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USERNAME} #sajang_user
+    password: ${LOCAL_DB_PASSWORD} #sajang_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hibernate.dialect.MySQLDialect
+      use_sql_comments: true
+      default_batch_fetch_size: 1000
+---
+spring:
+  config:
+    activate:
+      on-profile: develop
+  datasource:
+    url: ${AWS_DB_URL}
+    username: ${AWS_DB_USERNAME} #sajang_user
+    password: ${AWS_DB_PASSWORD} #sajang_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hibernate.dialect.MySQLDialect
+      use_sql_comments: true
+      default_batch_fetch_size: 1000
