@@ -2,6 +2,7 @@
 spring:
   profiles:
     active: local
+
   security:
     oauth2:
       client:
@@ -54,7 +55,6 @@ server:
   tomcat:
     max-swallow-size: -1
     max-http-form-post-size: -1
-  port: ${PORT:8080}
 
 ---
 spring:
