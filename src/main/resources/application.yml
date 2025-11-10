@@ -29,17 +29,6 @@ spring:
       max-file-size: 50MB
       max-request-size: 60MB
 
-JWT_SECRET: ${JWT_SECRET}
-JWT_EXPIRATION: ${JWT_EXPIRATION}                  # Access(ms)
-JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION}  # Refresh(ms)
-#S3
-cloud:
-  aws:
-    access-key: ${AWS_ACCESS_KEY:default-access-key}
-    secret-key: ${AWS_SECRET_KEY:default-secret-key}
-    region: ${AWS_REGION:ap-northeast-2}
-    bucket: ${AWS_BUCKET:default-bucket}
-
 #Swagger
 springdoc:
   api-docs:
@@ -96,3 +85,15 @@ spring:
       dialect: org.hibernate.dialect.MySQLDialect
       use_sql_comments: true
       default_batch_fetch_size: 1000
+
+---
+JWT_SECRET: ${JWT_SECRET}
+JWT_EXPIRATION: ${JWT_EXPIRATION}                  # Access(ms)
+JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION}  # Refresh(ms)
+#S3
+cloud:
+  aws:
+    access-key: ${AWS_ACCESS_KEY:default-access-key}
+    secret-key: ${AWS_SECRET_KEY:default-secret-key}
+    region: ${AWS_REGION:ap-northeast-2}
+    bucket: ${AWS_BUCKET:default-bucket}
